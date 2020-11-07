@@ -10,11 +10,33 @@
 		library="primefaces" />
 </h:head>
 <h:body>
+	<div class="ui-g">
+	    <div class="ui-g-4">
+			<h:form id="menuForm">
+				<img src="img/0.png" width="200"
+						height="200" />
+				<p:menu toggleable="true">
+					<p:submenu label="Menu">
+						<p:menuitem value="Livros" url="questao2.xhtml" />
+						<p:menuitem value="Logout" url="login.xhtml" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</div>
+	    <div class="ui-g-8">
+	    	<div style="display: inline-block; text-align: center;">
+		    	<h3>IFPA</h3>
+				<h3>TADS</h3>
+				<h3>Aplicação JSF Primefaces</h3>
+				<h3>Aluno: Jonathas Oliveira</h3>	
+	    	</div>
+	    </div>
+	</div>
 	<h:form id="formulario">
-		<p:panel id = "cadastroLivros" header="Cadastro de Livros">
+		<p:panel id = "cadastroLivros" header="Cadastro de Livros" >
 			<p:panelGrid columns="2" cellpadding="5">
-				<h:outputText for="nome" value="Título: *" />
-				<p:inputText id="nome" label="Nome" value="#{livroBean.livro.titulo}"
+				<h:outputText for="titulo" value="Título: *" />
+				<p:inputText id="titulo" label="Titulo" value="#{livroBean.livro.titulo}"
 					size="50" maxlength="50" required="true" />
 				<h:outputText for="isbn" value="ISBN:" />
 				<p:inputText id="isbn" label="ISBN" value="#{livroBean.livro.isbn}"
@@ -31,37 +53,59 @@
 					</p:calendar>
 			</p:panelGrid>
 
-			<p:commandButton id="cadastrar" value="Cadastrar" update="listLivros"
+			<p:commandButton id="cadastrar" value="Cadastrar" update="dataTableForm:listLivros"
 				action="#{livroBean.adicionarLivro}" />
 			<p:commandButton id="limpar" value="Limpar" update="cadastroLivros" process="@this" >
        			<p:resetInput target="cadastroLivros" />
        		</p:commandButton>
 		</p:panel>
-
 	</h:form>
 
-
-	<h2>Lista de livros</h2>
-	<p:dataTable id="listLivros" value="#{livroBean.listLivros}" var="c">
-		<p:column headerText="Título">
-			<h:outputText value="#{c.titulo}" />
-		</p:column>
-		<p:column headerText="ISBN">
-			<h:outputText value="#{c.isbn}" />
-		</p:column>
-		<p:column headerText="Preço">
-			<h:outputText value="#{c.preco}" />
-		</p:column>
-		<p:column headerText="Data de lançamento">
-			<h:outputText value="#{c.dataLancamento}">
-				<f:convertDateTime id="padraoDataNascimento"
-					pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-			</h:outputText>
-		</p:column>
-		<p:column headerText="Remover">
-			<p:commandButton icon="pi pi-times"
-				actionListener="#{livroBean.remover(c)}" update="listLivros" />
-		</p:column>
-	</p:dataTable>
+	<h:form id="dataTableForm">
+		<h2>Lista de livros</h2>
+		<p:dataTable id="listLivros" value="#{livroBean.listLivros}" var="c" editable="true">
+			<p:column headerText="Título">
+				<p:cellEditor>
+					<f:facet name="output"><h:outputText value="#{c.titulo}" /></f:facet>
+					<f:facet name="input"><p:inputText value="#{c.titulo}" /></f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="ISBN">
+				<p:cellEditor>
+					<f:facet name="output"><h:outputText value="#{c.isbn}" /></f:facet>
+					<f:facet name="input"><p:inputText value="#{c.isbn}" /></f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Preço">
+				<p:cellEditor>
+					<f:facet name="output"><h:outputText value="#{c.preco}" /></f:facet>
+					<f:facet name="input"><p:inputText value="#{c.preco}" /></f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Data de lançamento">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{c.dataLancamento}">
+							<f:convertDateTime id="padraoDataNascimento"
+								pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar value="#{c.dataLancamento}" pattern="dd/MM/yyyy">
+							<f:convertDateTime id="padraoData" pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Editar">
+            	<p:rowEditor />
+        	</p:column>
+			<p:column headerText="Remover">
+				<p:commandButton icon="pi pi-times"
+					actionListener="#{livroBean.remover(c)}" update="listLivros" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
 </h:body>
 </html>
