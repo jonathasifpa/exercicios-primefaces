@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro de Livros</title>
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+</h:head>
+<h:body>
+	<h:form id="formulario">
+		<p:panel id = "cadastroLivros" header="Cadastro de Livros">
+			<p:panelGrid columns="2" cellpadding="5">
+				<h:outputText for="nome" value="Título: *" />
+				<p:inputText id="nome" label="Nome" value="#{livroBean.livro.titulo}"
+					size="50" maxlength="50" required="true" />
+				<h:outputText for="isbn" value="ISBN:" />
+				<p:inputText id="isbn" label="ISBN" value="#{livroBean.livro.isbn}"
+					size="50" maxlength="50" />
+				<h:outputText for="preco" value="Preço:" />
+				<p:inputText id="preco" label="Preço" value="#{livroBean.livro.preco}"
+					size="50" maxlength="50" />
+				<h:outputText for="dataLancamento" value="Data de Lançamento: " />
+					<p:calendar id="dataLancamento"
+						value="#{livroBean.livro.dataLancamento}" pattern="dd/MM/yyyy"
+						size="50" maxlength="50" >
+						<f:convertDateTime id="padraoData" pattern="dd/MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</p:calendar>
+			</p:panelGrid>
+
+			<p:commandButton id="cadastrar" value="Cadastrar" update="listLivros"
+				action="#{livroBean.adicionarLivro}" />
+			<p:commandButton id="limpar" value="Limpar" update="cadastroLivros" process="@this" >
+       			<p:resetInput target="cadastroLivros" />
+       		</p:commandButton>
+		</p:panel>
+
+	</h:form>
+
+
+	<h2>Lista de livros</h2>
+	<p:dataTable id="listLivros" value="#{livroBean.listLivros}" var="c">
+		<p:column headerText="Título">
+			<h:outputText value="#{c.titulo}" />
+		</p:column>
+		<p:column headerText="ISBN">
+			<h:outputText value="#{c.isbn}" />
+		</p:column>
+		<p:column headerText="Preço">
+			<h:outputText value="#{c.preco}" />
+		</p:column>
+		<p:column headerText="Data de lançamento">
+			<h:outputText value="#{c.dataLancamento}">
+				<f:convertDateTime id="padraoDataNascimento"
+					pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Remover">
+			<p:commandButton icon="pi pi-times"
+				actionListener="#{livroBean.remover(c)}" update="listLivros" />
+		</p:column>
+	</p:dataTable>
+</h:body>
+</html>
