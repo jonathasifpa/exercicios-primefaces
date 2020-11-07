@@ -63,7 +63,8 @@
 
 	<h:form id="dataTableForm">
 		<h2>Lista de livros</h2>
-		<p:dataTable id="listLivros" value="#{livroBean.listLivros}" var="c" editable="true">
+		<p:dataTable id="listLivros" value="#{livroBean.listLivros}" var="c" editable="true" rows="5" 
+		paginator="true">
 			<p:column headerText="Título">
 				<p:cellEditor>
 					<f:facet name="output"><h:outputText value="#{c.titulo}" /></f:facet>
